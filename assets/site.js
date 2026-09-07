@@ -21,3 +21,33 @@ if (menuButton && menu) {
 document.querySelectorAll("[data-current-year]").forEach((element) => {
   element.textContent = String(new Date().getFullYear());
 });
+
+document.addEventListener("click", (event) => {
+  const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
+
+  if (!(link instanceof HTMLAnchorElement)) {
+    return;
+  }
+
+  let hostname;
+
+  try {
+    hostname = new URL(link.href).hostname.toLowerCase();
+  } catch {
+    return;
+  }
+
+  const isWhatsAppLink = hostname === "wa.me"
+    || hostname === "whatsapp.com"
+    || hostname.endsWith(".whatsapp.com");
+
+  if (!isWhatsAppLink || typeof gtag !== "function") {
+    return;
+  }
+
+  gtag("event", "conversion", {
+    send_to: "AW-18432093454/_InoCLbqge8cEI7ajdVE",
+    value: 1.0,
+    currency: "BRL",
+  });
+});
